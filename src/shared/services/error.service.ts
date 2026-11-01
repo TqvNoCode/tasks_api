@@ -54,13 +54,30 @@ export class ErrorService {
     return transformedError;
   }
 
-  private combine(err_msg: string, i18n: I18nContext, errors: object[] = []) {
-    console.log(errors);
-    return Object.assign(i18n.t(`errors.${err_msg}`), {});
+  private combine(err_msg: string, i18n: I18nContext, _errors: object[] = []) {
+    const translation = i18n ? i18n.t(`errors.${err_msg}`) : null;
+    if (
+      !translation ||
+      translation === `errors.${err_msg}` ||
+      (typeof translation === 'string' && translation.startsWith('errors.'))
+    ) {
+      return { message: err_msg };
+    }
+    return typeof translation === 'object'
+      ? Object.assign(translation, {})
+      : { message: translation };
   }
 
   private combineDev(err_msg: string, i18n: I18nContext, stackTrace: any) {
-    return Object.assign(i18n.t(`errors.${err_msg}`), {
+    const translation = i18n ? i18n.t(`errors.${err_msg}`) : null;
+    if (
+      !translation ||
+      translation === `errors.${err_msg}` ||
+      (typeof translation === 'string' && translation.startsWith('errors.'))
+    ) {
+      return { message: err_msg, details: stackTrace };
+    }
+    return Object.assign(translation, {
       details: stackTrace,
     });
   }

@@ -1,4 +1,4 @@
-version: '3.8'
+#version: '3.8'
 
 networks:
   app-network:
@@ -39,7 +39,7 @@ services:
   init_db:
     image: base
     # uncomment the line below to fix the error related to argon2
-    # command: sh -c "npm rebuild argon2 --build-from-source && npm run typeorm:run-migration && npm run seed:run"
+    #command: sh -c "npm rebuild argon2 --build-from-source && npm run typeorm:run-migration && npm run seed:run"
     command: sh -c "npm run typeorm:run-migration && npm run seed:run"
     env_file:
       - .env
